@@ -1,5 +1,5 @@
 /*
-Title: Chapter 7 Exercise 12 - Gradebook
+Title: Chapter 7 Exercise 13 - Gradebook Modification
 File Name : Ch7Ex12_CSC221_Assignment
 Programmer : Brion Blais
 Date : 11 / 2024
@@ -12,6 +12,8 @@ The program should allow the user to enter each student's name and his or her fo
 calculate and display each sutdent's average test score, and a letter grade based on the average.
 
 Input validation: Do not accept test scores less than 0 or greater than 100.
+
+Gradebook Part 2 -  change the program to drop the lowest grade during calculation of the average and letter grade.
  */
 
 #include <iostream>
@@ -28,11 +30,13 @@ double student1[4];
 double student2[4];
 double student3[4];
 double student4[4];
+double total[4];
 
 void studentScores(int);
 double scoreInput();
 char toLetter(double);
 void report();
+double dropMin();
 
 int main()
 {
@@ -51,39 +55,40 @@ int main()
 
 void studentScores(int studentNumber) {
     double score;
-    double total = 0;
     for (int testNumber = 0; testNumber < 4; testNumber++) {
         cout << "Please enter the score for test " << (testNumber + 1) << ":\t";
         switch (studentNumber) {
         case 0:
             score = scoreInput();
             student0[testNumber] = score;
-            total += score;
+            total[testNumber] = score;
             break;
         case 1:
             score = scoreInput();
             student1[testNumber] = score;
-            total += score;
+            total[testNumber] = score;
             break;
         case 2:
             score = scoreInput();
             student2[testNumber] = score;
-            total += score;
+            total[testNumber] = score;
             break;
         case 3:
             score = scoreInput();
             student3[testNumber] = score;
-            total += score;
+            total[testNumber] = score;
             break;
         case 4:
             score = scoreInput();
             student4[testNumber] = score;
-            total += score;
+            total[testNumber] = score;
             break;
         default: cout << "Program error";
         }
     }
-    averages[studentNumber] = total / 4;
+    cout << "Dropping the lowest score ... \n";
+    double total = dropMin();
+    averages[studentNumber] = total / 3;
     studentLetterGrades[studentNumber] = toLetter(averages[studentNumber]);
     cout << endl;
 }
@@ -115,6 +120,26 @@ char toLetter(double average) {
     else {
         return 'F';
     }
+}
+
+double dropMin() {
+    int count = 3;
+    int index = 0;
+    double sum = 0;
+    double min = total[0];
+    for (; count > 0; count--) {
+        if (total[count] < min) {
+            min = total[count];
+        }
+        else {
+            sum += total[count];
+        }
+        
+    }
+    if (min != total[0]) {
+        sum += total[0];
+    }
+    return sum;
 }
 
 void report() {
